@@ -2,6 +2,8 @@
 
 <h2 align="center"> Sistema de Cache para TypeScript </h2>
 
+<h2 align="center">🚧 Projeto em desenvolvimento! 🚧</h2>
+
 Este projeto consiste em uma biblioteca para implementação de cache em
 aplicações TypeScript. Com o uso do cache, é possível reduzir a latência e
 melhorar o desempenho de aplicações que necessitam de acesso frequente a
@@ -10,6 +12,8 @@ dados ou processos.
 ## Instalação
 
 Para instalar a biblioteca, basta utilizar o gerenciador de pacotes npm:
+
+🚧 Não disponível ainda 🚧
 
 ```shell
 npm i dzn-cache
