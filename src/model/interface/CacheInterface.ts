@@ -37,33 +37,42 @@ interface CacheInterface {
   /**
    * Armazena um valor no cache para a chave informada.
    * @param key A chave para armazenar o valor.
-   * @param value O valor a ser armazenado.
+   * @param value O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
+   * @param seconds O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
    */
-  set(key: string, value: string): Promise<void>;
+  set(
+    key: string,
+    value: string | (() => string),
+    seconds?: number,
+  ): Promise<void>;
 
   /**
    * Armazena um valor no cache para a chave informada por um tempo determinado.
    * @param key A chave para armazenar o valor.
-   * @param value O valor a ser armazenado.
+   * @param value O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
    * @param seconds O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
    */
-  put(key: string, value: string, seconds?: number): Promise<void>;
+  put(
+    key: string,
+    value: string | (() => string),
+    seconds?: number,
+  ): Promise<void>;
 
   /**
    * Armazena um valor no cache para a chave informada indefinidamente.
    * @param key A chave para armazenar o valor.
-   * @param value O valor a ser armazenado.
+   * @param value O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
    */
-  forever(key: string, value: string): Promise<void>;
+  forever(key: string, value: string | (() => string)): Promise<void>;
 
   /**
    * Retorna o valor armazenado no cache para a chave informada, se existir.
    * Caso não exista valor para a chave, o método armazena o valor fornecido no cache por um tempo indeterminado e retorna-o.
    * @param key A chave para buscar o valor.
-   * @param value O valor a ser armazenado caso não exista valor para a chave.
+   * @param value O valor a ser armazenado caso não exista valor para a chave. Pode ser uma string ou um callback que retorna uma string.
    * @returns O valor armazenado ou o valor informado.
    */
-  rememberForever(key: string, value: string): Promise<string>;
+  rememberForever(key: string, value: string | (() => string)): Promise<string>;
 
   /**
    * Retorna o valor armazenado no cache para a chave informada, se existir.
@@ -73,7 +82,11 @@ interface CacheInterface {
    * @param seconds O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
    * @returns O valor armazenado ou o valor informado.
    */
-  remember(key: string, value: string, seconds?: number): Promise<string>;
+  remember(
+    key: string,
+    value: string | (() => string),
+    seconds?: number,
+  ): Promise<string>;
 }
 
 export { CacheInterface };
