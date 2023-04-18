@@ -132,3 +132,6 @@ dist
 
 # Compliados
 dist
+
+# ide
+.idea
