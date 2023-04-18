@@ -1,27 +1,10 @@
 import 'dotenv/config';
-import { redisClient } from './config/RedisConfig';
+import { RedisCacheModel } from './model/RedisCacheModel';
 
-redisClient.set('oi', 'redis');
-
-async function getValueFromRedis(key: string): Promise<unknown> {
-  return new Promise((resolve, reject) => {
-    redisClient.get(key, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
+if (process.env.CACHE_DRIVER == 'redis') {
+  const Cache = new RedisCacheModel();
+} else {
+  const Cache = null;
 }
 
-async function main() {
-  try {
-    const value = await getValueFromRedis('oi');
-    console.log(value);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-main();
+export { Cache };
