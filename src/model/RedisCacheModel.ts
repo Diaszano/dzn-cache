@@ -1,14 +1,10 @@
 import Redis, { ChainableCommander } from 'ioredis';
 import { CacheInterface } from './interface/CacheInterface';
-import { redisPool } from '../config/RedisConfig';
 import { Pool } from 'generic-pool';
+import { redisPool as redisConnection } from '../config/RedisConfig';
 
 class RedisCacheModel implements CacheInterface {
-  private redisPool: Pool<Redis>;
-
-  constructor() {
-    this.redisPool = redisPool;
-  }
+  constructor(private readonly redisPool: Pool<Redis> = redisConnection) {}
 
   public async flush(): Promise<void> {
     await this.redisPool.use((client: Redis) => client.flushall());
@@ -35,53 +31,76 @@ class RedisCacheModel implements CacheInterface {
     await this.redisPool.use((client: Redis) => client.del(key));
   }
 
-  public async set(key: string, value: string): Promise<void> {
-    await this.redisPool.use((client: Redis) => client.set(key, value));
+  public async set(
+    key: string,
+    value: string | (() => string),
+    seconds?: number,
+  ): Promise<void> {
+    await this.put(key, value, seconds);
   }
 
   public async put(
     key: string,
-    value: string,
+    value: string | (() => string),
     seconds?: number,
   ): Promise<void> {
     const redisClient: Redis = await this.redisPool.acquire();
     const pipeline: ChainableCommander = redisClient.pipeline();
 
-    pipeline.set(key, value);
+    let valueToStore: string;
 
-    if (seconds !== undefined) {
+    if (typeof value === 'string') {
+      valueToStore = value;
+    } else {
+      valueToStore = value();
+    }
+
+    pipeline.set(key, valueToStore);
+
+    if (seconds !== undefined && seconds > 0) {
       pipeline.expire(key, seconds);
     }
 
     await pipeline.exec();
+    await this.redisPool.release(redisClient);
+  }
 
-    return this.redisPool.release(redisClient);
+  public async forever(
+    key: string,
+    value: string | (() => string),
+  ): Promise<void> {
+    await this.put(key, value);
+  }
+
+  public async rememberForever(
+    key: string,
+    value: string | (() => string),
+  ): Promise<string> {
+    return this.remember(key, value);
   }
 
   public async remember(
     key: string,
-    value: string,
+    value: string | (() => string),
     seconds?: number,
   ): Promise<string> {
     const cachedValue: string | null = await this.get(key);
+
     if (cachedValue !== null) {
       return cachedValue;
     }
-    await this.put(key, value, seconds);
-    return value;
-  }
 
-  public async rememberForever(key: string, value: string): Promise<string> {
-    const cachedValue: string | null = await this.get(key);
-    if (cachedValue !== null) {
-      return cachedValue;
+    let valueToStore: string;
+
+    if (typeof value === 'string') {
+      valueToStore = value;
+    } else {
+      valueToStore = value();
     }
-    await this.set(key, value);
-    return value;
-  }
 
-  public async forever(key: string, value: string): Promise<void> {
-    await this.set(key, value);
+    await this.put(key, valueToStore, seconds);
+
+    return valueToStore;
   }
 }
 

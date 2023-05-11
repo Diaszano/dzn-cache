@@ -1,60 +1,70 @@
 import 'dotenv/config';
-import { RedisCacheModel } from './model/RedisCacheModel';
 import { CacheInterface } from './model/interface/CacheInterface';
+import { RedisCacheModel } from './model/RedisCacheModel';
 
 class Cache implements CacheInterface {
-  private service: RedisCacheModel;
+  private cacheDriver: RedisCacheModel;
 
   constructor() {
-    this.service = new RedisCacheModel();
+    this.cacheDriver = new RedisCacheModel();
   }
 
   public async flush(): Promise<void> {
-    return this.service.flush();
+    await this.cacheDriver.flush();
   }
 
   public async get(key: string): Promise<string | null> {
-    return this.service.get(key);
+    return this.cacheDriver.get(key);
   }
 
   public async has(key: string): Promise<boolean> {
-    return this.service.has(key);
+    return this.cacheDriver.has(key);
   }
 
   public async pull(key: string): Promise<string | null> {
-    return this.service.pull(key);
+    return this.cacheDriver.pull(key);
   }
 
   public async forget(key: string): Promise<void> {
-    return this.service.forget(key);
+    return this.cacheDriver.forget(key);
   }
 
-  public async set(key: string, value: string): Promise<void> {
-    return this.service.set(key, value);
+  public async set(
+    key: string,
+    value: string | (() => string),
+    seconds?: number,
+  ): Promise<void> {
+    await this.cacheDriver.set(key, value, seconds);
   }
 
   public async put(
     key: string,
-    value: string,
+    value: string | (() => string),
     seconds?: number,
   ): Promise<void> {
-    return this.service.put(key, value, seconds);
+    await this.cacheDriver.put(key, value, seconds);
+  }
+
+  public async forever(
+    key: string,
+    value: string | (() => string),
+  ): Promise<void> {
+    await this.cacheDriver.forever(key, value);
+  }
+
+  public async rememberForever(
+    key: string,
+    value: string | (() => string),
+  ): Promise<string> {
+    return this.cacheDriver.rememberForever(key, value);
   }
 
   public async remember(
     key: string,
-    value: string,
+    value: string | (() => string),
     seconds?: number,
   ): Promise<string> {
-    return this.service.remember(key, value, seconds);
-  }
-
-  public async rememberForever(key: string, value: string): Promise<string> {
-    return this.service.rememberForever(key, value);
-  }
-
-  public async forever(key: string, value: string): Promise<void> {
-    return this.service.forever(key, value);
+    return this.cacheDriver.remember(key, value, seconds);
   }
 }
 
