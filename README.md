@@ -118,7 +118,7 @@ const valor = cache.get('key');
 Temos também outros métodos, e eles são:
 
 ```typescript
-import cache from "./cache";
+import Cache from 'dzn-cache';
 
 const cache = new Cache();
 
