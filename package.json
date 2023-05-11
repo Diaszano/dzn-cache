@@ -1,11 +1,14 @@
 {
   "name": "dzn-cache",
-  "version": "0.0.2",
-  "description": "Um pacote TypeScript para cache simplificado com Redis/Memcached. Recupere, armazene, verifique e exclua dados facilmente. Aumente a performance e eficiência da sua aplicação com uma interface intuitiva.",
-  "main": "src/cache.ts",
+  "version": "0.0.3",
+  "license": "Apache-2.0",
+  "author": "Lucas Dias <Diaszano>",
+  "description": "Um pacote TypeScript para cache simplificado com Redis/Memcached.",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "build": "tsc --declaration",
-    "development": "clear && npx ts-node src/cache.ts"
+    "development": "clear && npx ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -19,8 +22,6 @@
     "redis",
     "Memcached"
   ],
-  "author": "Lucas Dias <Diaszano>",
-  "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
