@@ -1,9 +1,11 @@
 {
   "name": "dzn-cache",
-  "version": "1.0.0",
-  "description": "",
-  "main": "cache.ts",
+  "version": "0.0.1",
+  "description": "Este projeto consiste em uma biblioteca para implementação de cache em aplicações TypeScript. Com o uso do cache, é possível reduzir a latência e melhorar o desempenho de aplicações que necessitam de acesso frequente a dados ou processos.",
+  "main": "dist/cache.js",
+  "types": "dist/cache.d.ts",
   "scripts": {
+    "build": "tsc --declaration",
     "development": "clear && npx ts-node src/cache.ts"
   },
   "keywords": [],
