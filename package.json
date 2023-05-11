@@ -1,16 +1,26 @@
 {
   "name": "dzn-cache",
-  "version": "0.0.1",
-  "description": "Este projeto consiste em uma biblioteca para implementação de cache em aplicações TypeScript. Com o uso do cache, é possível reduzir a latência e melhorar o desempenho de aplicações que necessitam de acesso frequente a dados ou processos.",
-  "main": "dist/cache.js",
-  "types": "dist/cache.d.ts",
+  "version": "0.0.2",
+  "description": "Um pacote TypeScript para cache simplificado com Redis/Memcached. Recupere, armazene, verifique e exclua dados facilmente. Aumente a performance e eficiência da sua aplicação com uma interface intuitiva.",
+  "main": "src/cache.ts",
   "scripts": {
     "build": "tsc --declaration",
     "development": "clear && npx ts-node src/cache.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "Apache 2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:Diaszano/dzn-cache.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Diaszano/dzn-cache/issues"
+  },
+  "keywords": [
+    "cache",
+    "redis",
+    "Memcached"
+  ],
+  "author": "Lucas Dias <Diaszano>",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
