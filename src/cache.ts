@@ -68,4 +68,4 @@ class Cache implements CacheInterface {
   }
 }
 
-export default new Cache();
+export default Cache;
