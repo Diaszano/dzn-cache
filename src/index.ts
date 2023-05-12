@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { CacheInterface } from './model/interface/CacheInterface';
 import { RedisCacheModel } from './model/RedisCacheModel';
 
-class Cache implements CacheInterface {
+export default class Cache implements CacheInterface {
   private cacheDriver: RedisCacheModel;
 
   constructor() {
@@ -67,5 +67,3 @@ class Cache implements CacheInterface {
     return this.cacheDriver.remember(key, value, seconds);
   }
 }
-
-export default Cache;
