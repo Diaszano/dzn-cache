@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { Cache as CacheInterface } from './Model/Interface/Cache';
 import RedisOptions, {
   RedisOptionsDefault,
