@@ -1,12 +1,16 @@
 import 'dotenv/config';
 import { Cache as CacheInterface } from './Model/Interface/Cache';
-import RedisOptions from './Model/Redis/Interface/RedisOptions';
+import RedisOptions, {
+  RedisOptionsDefault,
+} from './Model/Redis/Interface/RedisOptions';
 import { CacheRedis } from './Model/Redis/Cache.redis';
+
+export { RedisOptions };
 
 export default class Cache implements CacheInterface {
   private cacheDriver: CacheRedis;
 
-  constructor(public readonly options: RedisOptions) {
+  constructor(public readonly options: RedisOptions = RedisOptionsDefault) {
     this.cacheDriver = new CacheRedis(options);
   }
 
