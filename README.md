@@ -60,34 +60,18 @@ Para instalar a biblioteca de forma profissional, utilize o gerenciador de pacot
 npm i dzn-cache
 ```
 
-## Configuração
+## Utilização
 
 🚧 No momento só temos a implementação para o Redis! 🚧
 
-Para iniciar a configuração deve ser criado um arquivo .env como o exemplo a baixo:
-
-```dotenv
-# Tipo de conexão
-CACHE_DRIVER=redis
-
-# Dados de conexão no Redis
-REDIS_PORT=6379
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=
-REDIS_USERNAME=
-REDIS_DATABASE=0
-```
-
-## Utilização
-
 Para utilizar o cache em sua aplicação, é necessário importar a
-classe Cache da biblioteca:
+classe CacheModelInterface da biblioteca:
 
 ```typescript
 import Cache from 'dzn-cache';
 ```
 
-Em seguida, é possível criar uma instância da classe Cache e utilizá-la para
+Em seguida, é possível criar uma instância da classe **Cache** e utilizá-la para
 armazenar e recuperar dados em cache:
 
 ```typescript
@@ -124,41 +108,44 @@ const cache = new Cache();
 
 /**
  * Limpa todos os dados do cache.
+ * @returns {Promise<void>}
  */
 const promise_flush: Promise<void> = cache.flush();
 
 /**
  * Retorna o valor armazenado no cache para a chave informada.
- * @param key A chave para buscar o valor.
- * @returns O valor armazenado ou null se não houver valor para a chave.
+ * @param {string} key - A chave para buscar o valor.
+ * @returns {Promise<string|null>} - O valor armazenado ou null se não houver valor para a chave.
  */
 const promise_get: Promise<string | null> = cache.get('key');
 
 /**
  * Verifica se existe um valor armazenado para a chave informada.
- * @param key A chave para verificar a existência do valor.
- * @returns True se existe valor armazenado ou False caso contrário.
+ * @param {string} key - A chave para verificar a existência do valor.
+ * @returns {Promise<boolean>} - True se existe valor armazenado ou False caso contrário.
  */
 const promise_has: Promise<boolean> = cache.has('key');
 
 /**
- * Retorna o valor armazenado no cache para a chave informada e remove a chave do cache.
- * @param key A chave para buscar o valor.
- * @returns O valor armazenado ou null se não houver valor para a chave.
+ * Retorna o valor armazenado no cache para a chave informada e o remove do cache.
+ * @param {string} key - A chave para buscar o valor.
+ * @returns {Promise<string|null>} - O valor armazenado ou null se não houver valor para a chave.
  */
 const promise_pull: Promise<string | null> = cache.pull('key');
 
 /**
  * Remove a chave e o valor associado do cache.
- * @param key A chave para remover.
+ * @param {string} key - A chave para remover.
+ * @returns {Promise<void>}
  */
 const promise_forget: Promise<void> = cache.forget('key');
 
 /**
- * Armazena um valor no cache para a chave informada.
- * @param key A chave para armazenar o valor.
- * @param value O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
- * @param seconds O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
+ * Armazena um valor no cache para a chave informada por um tempo determinado.
+ * @param {string} key - A chave para armazenar o valor.
+ * @param {string | (() => string)} value - O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
+ * @param {number} seconds - O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
+ * @returns {Promise<void>}
  */
 const promise_set: Promise<void> = cache.set('chave', (): string => {
     const valor = 'Siga o Diaszano no GitHub.';
@@ -166,20 +153,21 @@ const promise_set: Promise<void> = cache.set('chave', (): string => {
 }, 5 * 60 * 1000);
 
 /**
- * Armazena um valor no cache para a chave informada por um tempo determinado.
- * @param key A chave para armazenar o valor.
- * @param value O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
- * @param seconds O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
+ * Armazena um valor no cache para a chave informada por um tempo determinado caso não exista.
+ * @param {string} key - A chave para armazenar o valor.
+ * @param {string | (() => string)} value - O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
+ * @param {number} seconds - O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
+ * @returns {Promise<void>}
  */
-const promise_put: Promise<void> = cache.put('chave', (): string => {
+const promise_add: Promise<void> = cache.add('chave', (): string => {
     const valor = 'Siga o Diaszano no GitHub.';
     return valor;
 }, 5 * 60 * 1000);
 
 /**
- * Armazena um valor no cache para a chave informada indefinidamente.
- * @param key A chave para armazenar o valor.
- * @param value O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
+ * Armazena um valor no cache para a chave informada por um tempo indefinido.
+ * @param {string} key - A chave para armazenar o valor.
+ * @param {string | (() => string)} value - O valor a ser armazenado. Pode ser uma string ou um callback que retorna uma string.
  */
 const promisse_forever: Promise<void> = cache.forever('chave', (): string => {
     const valor = 'Siga o Diaszano no GitHub.';
@@ -189,9 +177,9 @@ const promisse_forever: Promise<void> = cache.forever('chave', (): string => {
 /**
  * Retorna o valor armazenado no cache para a chave informada, se existir.
  * Caso não exista valor para a chave, o método armazena o valor fornecido no cache por um tempo indeterminado e retorna-o.
- * @param key A chave para buscar o valor.
- * @param value O valor a ser armazenado caso não exista valor para a chave. Pode ser uma string ou um callback que retorna uma string.
- * @returns O valor armazenado ou o valor informado.
+ * @param {string} key - A chave para buscar o valor.
+ * @param {string | (() => string)} value - O valor a ser armazenado caso não exista valor para a chave. Pode ser uma string ou um callback que retorna uma string.
+ * @returns {Promise<string>} - O valor armazenado ou o valor informado.
  */
 const promisse_rememberForever: Promise<string | null> = cache.rememberForever('chave', (): string => {
     const valor = 'Siga o Diaszano no GitHub.';
@@ -201,10 +189,10 @@ const promisse_rememberForever: Promise<string | null> = cache.rememberForever('
 /**
  * Retorna o valor armazenado no cache para a chave informada, se existir.
  * Caso não exista valor para a chave, o método armazena o valor fornecido no cache por um tempo determinado e retorna-o.
- * @param key A chave para buscar o valor.
- * @param value O valor a ser armazenado caso não exista valor para a chave.
- * @param seconds O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
- * @returns O valor armazenado ou o valor informado.
+ * @param {string} key - A chave para buscar o valor.
+ * @param {string | (() => string)} value - O valor a ser armazenado caso não exista valor para a chave.
+ * @param {number} seconds - O tempo de vida do valor em segundos. Se não for informado, o valor será armazenado indefinidamente.
+ * @returns {Promise<string>} - O valor armazenado ou o valor informado.
  */
 const promisse_rememberremember: Promise<string | null> = cache.remember('chave', (): string => {
     const valor = 'Siga o Diaszano no GitHub.';
