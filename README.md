@@ -10,7 +10,7 @@
 <p>Uma solução simplificada de cache para TypeScript</p>
 
 <a href="https://www.npmjs.com/package/dzn-cache">
-    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/diaszano/dzn-cache?color=green">
+    <img alt="npm" src="https://img.shields.io/npm/v/dzn-cache?color=green">
 </a>
 
 <a href="https://www.npmjs.com/package/dzn-cache">
