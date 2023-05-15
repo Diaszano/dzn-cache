@@ -10,12 +10,13 @@
     "url": "https://github.com/Diaszano"
   },
   "license": "Apache-2.0",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "scripts": {
     "test": "vitest",
     "build": "tsc",
     "build:docs": "typedoc src/Cache.ts",
-    "development": "clear && npx ts-node src/Cache.ts"
+    "development": "clear && npx ts-node src/Cache.ts",
+    "publish:clear": "npm run build && npm publish && rm -r dist"
   },
   "keywords": [
     "cache",
