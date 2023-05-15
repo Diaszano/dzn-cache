@@ -1,7 +1,13 @@
 import { RedisOptions as RedisOptionsIoredis } from 'ioredis';
 
 export default interface RedisOptions extends RedisOptionsIoredis {
+  port: number;
+  host: string;
   username?: string;
+  password?: string;
+  db: number;
+  retryStrategy?: (times: number) => number;
+  maxRetriesPerRequest?: number;
 }
 
 export const RedisOptionsDefault: RedisOptions = {
