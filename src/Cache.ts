@@ -1,12 +1,13 @@
 import 'dotenv/config';
-import { CacheInterface } from './model/interface/CacheInterface';
-import { RedisCacheModel } from './model/RedisCacheModel';
+import { Cache as CacheInterface } from './Model/Interface/Cache';
+import RedisOptions from './Model/Redis/Interface/RedisOptions';
+import { CacheRedis } from './Model/Redis/Cache.redis';
 
 export default class Cache implements CacheInterface {
-  private cacheDriver: RedisCacheModel;
+  private cacheDriver: CacheRedis;
 
-  constructor() {
-    this.cacheDriver = new RedisCacheModel();
+  constructor(public readonly options: RedisOptions) {
+    this.cacheDriver = new CacheRedis(options);
   }
 
   public async flush(): Promise<void> {
@@ -37,12 +38,12 @@ export default class Cache implements CacheInterface {
     await this.cacheDriver.set(key, value, seconds);
   }
 
-  public async put(
+  public async add(
     key: string,
     value: string | (() => string),
     seconds?: number,
   ): Promise<void> {
-    await this.cacheDriver.put(key, value, seconds);
+    await this.cacheDriver.add(key, value, seconds);
   }
 
   public async forever(
